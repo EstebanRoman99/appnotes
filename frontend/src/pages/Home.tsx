@@ -38,8 +38,13 @@ const Home: React.FC<HomeProps> = ({
     description: yup.string().required("Description is required"),
     categories: yup
       .array()
-      .of(yup.number().required("Category ID is required"))
-      .min(1, "At least one category is required"),
+      .of(
+        yup.object({
+          id: yup.number().required(),
+          name: yup.string().required(),
+        })
+      )
+      .required("Categories are required"),
   });
 
   // state add notes
@@ -67,24 +72,36 @@ const Home: React.FC<HomeProps> = ({
     resolver: yupResolver(noteSchema),
   });
 
-  const onAddSubmit = (data: any) => {
+  interface AddNoteFormData {
+    title: string;
+    description: string;
+    categories: string[];
+  }
+
+  const onAddSubmit = (data: AddNoteFormData) => {
     const selectedCategoryIds = data.categories.map((id: string) =>
       parseInt(id)
     );
+
     handleAddNote(data.title, data.description, selectedCategoryIds);
     setIsAdding(false);
     addReset();
   };
 
-  // hook edit
   const {
     register: editRegister,
     handleSubmit: editHandleSubmit,
     reset: editReset,
     formState: { errors: editErrors },
-  } = useForm({
+  } = useForm<Note>({
     resolver: yupResolver(noteSchema),
-    defaultValues: noteToEdit || {},
+    defaultValues: noteToEdit || {
+      id: 0, // Asegúrate de que haya valores por defecto válidos
+      title: "",
+      description: "",
+      categories: [], // Default como un arreglo vacío
+      archived: false,
+    },
   });
 
   const handleEdit = (note: Note) => {
@@ -276,7 +293,6 @@ const Home: React.FC<HomeProps> = ({
                     confirmButtonColor: "#F44336",
                   });
                 }
-                e.target.reset();
               }}
               className="flex gap-2 mb-4"
             >

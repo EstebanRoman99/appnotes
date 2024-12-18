@@ -17,7 +17,7 @@ export interface Note {
   id: number;
   title: string;
   description: string;
-  categories: string[];
+  categories: Category[];
   archived: boolean;
 }
 export interface Category {
@@ -30,14 +30,15 @@ function App() {
   useEffect(() => {
     const loadNotes = async () => {
       try {
-        const notes = await fetchNotes();
-        const normalizedNotes = notes.map((note) => ({
+        const notes = await fetchNotes(); // Asegúrate de que fetchNotes devuelve un array de Note
+
+        const normalizedNotes = notes.map((note: Note) => ({
           ...note,
           categories: Array.isArray(note.categories) ? note.categories : [],
         }));
 
-        setActiveNotes(normalizedNotes.filter((note) => !note.archived));
-        setArchivedNotes(normalizedNotes.filter((note) => note.archived));
+        setActiveNotes(normalizedNotes.filter((note: Note) => !note.archived));
+        setArchivedNotes(normalizedNotes.filter((note: Note) => note.archived));
       } catch (error) {
         console.error("Error fetching notes:", error);
       }
@@ -55,12 +56,12 @@ function App() {
     const newNote = {
       title,
       description,
-      categories: selectedCategoryIds.map((id) => ({ id })),
+      categories: selectedCategoryIds.map((id) => id.toString()), // Convertir a string[]
       archived: false,
     };
 
     try {
-      const createdNote = await addNote(newNote);
+      const createdNote = await addNote(newNote); // La función addNote espera un objeto que coincida con la interfaz Note
 
       setActiveNotes((prevNotes) => [...prevNotes, createdNote]);
 
@@ -188,13 +189,6 @@ function App() {
 
   const PrivateRoute = ({ children }: { children: JSX.Element }) => {
     return isAuthenticated() ? children : <Navigate to="/login" />;
-  };
-
-  // logout function
-
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    window.location.href = "/login";
   };
 
   return (

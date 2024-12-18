@@ -1,48 +1,55 @@
 import axios from "axios";
+import { Note, Category } from "../App"; // Asegúrate de importar tus interfaces correctamente
 
 // Define la URL base desde una variable de entorno o valor por defecto
 const API_BASE_URL =
   import.meta.env.VITE_BACKEND_URL ||
   "https://appnotes-backend.onrender.com/api";
 
-// Configuración global de axios (puedes agregar headers comunes aquí)
+// Configuración global de axios
 const axiosInstance = axios.create({
   baseURL: API_BASE_URL,
   headers: { "Content-Type": "application/json" },
 });
 
 // ---------- NOTES ----------
-export const fetchNotes = async () => {
+export const fetchNotes = async (): Promise<Note[]> => {
   const response = await axiosInstance.get("/notes");
   return response.data;
 };
 
-export const addNote = async (newNote: any) => {
+export const addNote = async (newNote: Note): Promise<Note> => {
   const response = await axiosInstance.post("/notes", newNote);
   return response.data;
 };
 
-export const updateNote = async (id: number, updatedNote: any) => {
+export const updateNote = async (
+  id: number,
+  updatedNote: Partial<Note>
+): Promise<Note> => {
   const response = await axiosInstance.put(`/notes/${id}`, updatedNote);
   return response.data;
 };
 
-export const patchNote = async (id: number, partialNote: any) => {
+export const patchNote = async (
+  id: number,
+  partialNote: Partial<Note>
+): Promise<Note> => {
   const response = await axiosInstance.patch(`/notes/${id}`, partialNote);
   return response.data;
 };
 
-export const deleteNote = async (id: number) => {
+export const deleteNote = async (id: number): Promise<void> => {
   await axiosInstance.delete(`/notes/${id}`);
 };
 
 // ---------- CATEGORIES ----------
-export const fetchCategories = async () => {
+export const fetchCategories = async (): Promise<Category[]> => {
   const response = await axiosInstance.get("/categories");
   return response.data;
 };
 
-export const addCategory = async (newCategory: any) => {
+export const addCategory = async (newCategory: Category): Promise<Category> => {
   const response = await axiosInstance.post("/categories", newCategory);
   return response.data;
 };
@@ -52,7 +59,10 @@ export const deleteCategory = async (id: number): Promise<void> => {
 };
 
 // ---------- AUTH ----------
-export const login = async (username: string, password: string) => {
+export const login = async (
+  username: string,
+  password: string
+): Promise<{ token: string }> => {
   const response = await axiosInstance.post("/auth/login", {
     username,
     password,
