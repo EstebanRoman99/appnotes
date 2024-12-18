@@ -1,0 +1,11 @@
+/Users/seiradanny/Documents/challenge/RomanHernandez-72a462/backend/src/main/java/com/example/demo/DemoApplication.java
+/Users/seiradanny/Documents/challenge/RomanHernandez-72a462/backend/src/main/java/com/example/demo/config/CorsConfig.java
+/Users/seiradanny/Documents/challenge/RomanHernandez-72a462/backend/src/main/java/com/example/demo/config/SecurityConfig.java
+/Users/seiradanny/Documents/challenge/RomanHernandez-72a462/backend/src/main/java/com/example/demo/controllers/AuthController.java
+/Users/seiradanny/Documents/challenge/RomanHernandez-72a462/backend/src/main/java/com/example/demo/controllers/CategoryController.java
+/Users/seiradanny/Documents/challenge/RomanHernandez-72a462/backend/src/main/java/com/example/demo/controllers/NoteController.java
+/Users/seiradanny/Documents/challenge/RomanHernandez-72a462/backend/src/main/java/com/example/demo/models/Category.java
+/Users/seiradanny/Documents/challenge/RomanHernandez-72a462/backend/src/main/java/com/example/demo/models/Note.java
+/Users/seiradanny/Documents/challenge/RomanHernandez-72a462/backend/src/main/java/com/example/demo/repositories/CategoryRepository.java
+/Users/seiradanny/Documents/challenge/RomanHernandez-72a462/backend/src/main/java/com/example/demo/repositories/NoteRepository.java
+/Users/seiradanny/Documents/challenge/RomanHernandez-72a462/backend/src/main/java/com/example/demo/services/NoteService.java
