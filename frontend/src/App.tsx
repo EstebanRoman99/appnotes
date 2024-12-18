@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -10,7 +10,7 @@ import Home from "./pages/Home";
 import ArchivedNotes from "./pages/ArchivedNotes";
 import Login from "./pages/Login";
 import { fetchNotes, deleteNote, addNote, patchNote } from "./services/api";
-import { fetchCategories, addCategory } from "./services/api";
+import { fetchCategories } from "./services/api";
 import Swal from "sweetalert2";
 
 export interface Note {

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import NoteCard from "../components/NoteCard";
 import { Note } from "../App";
 import { fetchCategories } from "../services/api";
