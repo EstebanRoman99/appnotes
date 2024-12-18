@@ -1,65 +1,59 @@
 import axios from "axios";
 
-const API_BASE_URL = "http://localhost:8080/api";
+// Define la URL base desde una variable de entorno o valor por defecto
+const API_BASE_URL =
+  import.meta.env.VITE_BACKEND_URL ||
+  "https://appnotes-backend.onrender.com/api";
 
-// notes
+// Configuración global de axios (puedes agregar headers comunes aquí)
+const axiosInstance = axios.create({
+  baseURL: API_BASE_URL,
+  headers: { "Content-Type": "application/json" },
+});
 
+// ---------- NOTES ----------
 export const fetchNotes = async () => {
-  const response = await axios.get(`${API_BASE_URL}/notes`);
+  const response = await axiosInstance.get("/notes");
   return response.data;
 };
 
 export const addNote = async (newNote: any) => {
-  const response = await axios.post(`${API_BASE_URL}/notes`, newNote, {
-    headers: { "Content-Type": "application/json" },
-  });
+  const response = await axiosInstance.post("/notes", newNote);
   return response.data;
 };
 
 export const updateNote = async (id: number, updatedNote: any) => {
-  const response = await axios.put(`${API_BASE_URL}/notes/${id}`, updatedNote, {
-    headers: { "Content-Type": "application/json" },
-  });
+  const response = await axiosInstance.put(`/notes/${id}`, updatedNote);
   return response.data;
 };
 
 export const patchNote = async (id: number, partialNote: any) => {
-  const response = await axios.patch(
-    `${API_BASE_URL}/notes/${id}`,
-    partialNote,
-    {
-      headers: { "Content-Type": "application/json" },
-    }
-  );
+  const response = await axiosInstance.patch(`/notes/${id}`, partialNote);
   return response.data;
 };
 
 export const deleteNote = async (id: number) => {
-  await axios.delete(`${API_BASE_URL}/notes/${id}`);
+  await axiosInstance.delete(`/notes/${id}`);
 };
 
-// categories
-
+// ---------- CATEGORIES ----------
 export const fetchCategories = async () => {
-  const response = await axios.get(`${API_BASE_URL}/categories`);
+  const response = await axiosInstance.get("/categories");
   return response.data;
 };
 
 export const addCategory = async (newCategory: any) => {
-  const response = await axios.post(`${API_BASE_URL}/categories`, newCategory, {
-    headers: { "Content-Type": "application/json" },
-  });
+  const response = await axiosInstance.post("/categories", newCategory);
   return response.data;
 };
 
 export const deleteCategory = async (id: number): Promise<void> => {
-  await axios.delete(`${API_BASE_URL}/categories/${id}`);
+  await axiosInstance.delete(`/categories/${id}`);
 };
 
-// auth
-
+// ---------- AUTH ----------
 export const login = async (username: string, password: string) => {
-  const response = await axios.post("http://localhost:8080/api/auth/login", {
+  const response = await axiosInstance.post("/auth/login", {
     username,
     password,
   });
