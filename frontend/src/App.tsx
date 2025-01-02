@@ -25,6 +25,10 @@ export interface Category {
   name: string;
 }
 
+export interface NewCategory {
+  name: string;
+}
+
 export interface NewNote {
   title: string;
   description: string;

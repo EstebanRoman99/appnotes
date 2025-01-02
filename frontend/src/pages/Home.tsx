@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import NoteCard from "../components/NoteCard";
-import { Note, Category } from "../App";
+import { Note, Category, NewCategory } from "../App";
 import { updateNote } from "../services/api";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -8,6 +8,7 @@ import * as yup from "yup";
 import { addCategory, fetchCategories, deleteCategory } from "../services/api";
 import { fetchNotes } from "../services/api";
 import Swal from "sweetalert2";
+import axios, { AxiosError } from "axios";
 
 interface HomeProps {
   notes: Note[];
@@ -38,7 +39,15 @@ const Home: React.FC<HomeProps> = ({
     description: yup.string().required("Description is required"),
     categories: yup
       .array()
-      .of(yup.string())
+      .of(
+        yup.lazy((value) =>
+          typeof value === "string"
+            ? yup.string()
+            : yup.object({
+                id: yup.number().required("Category ID is required"),
+              })
+        )
+      )
       .required("Select at least one category"),
   });
 
@@ -116,13 +125,20 @@ const Home: React.FC<HomeProps> = ({
   };
 
   // Post Edit
-  const onEditSubmit = async (data: any) => {
+  const onEditSubmit = async (data: AddNoteFormData) => {
     if (noteToEdit) {
       const updatedData = {
         ...data,
-        categories: data.categories.map((categoryId: number) => ({
-          id: categoryId,
-        })),
+        categories: (data.categories || []).map((category) => {
+          if (typeof category === "string") {
+            // Si es un string, conviértelo en un objeto con `id` y un `name` vacío.
+            return { id: parseInt(category, 10), name: "" };
+          } else if (typeof category === "object" && "id" in category) {
+            // Si ya es un objeto con `id`, devuélvelo tal cual.
+            return category;
+          }
+          throw new Error("Invalid category format");
+        }),
       };
 
       try {
@@ -134,6 +150,7 @@ const Home: React.FC<HomeProps> = ({
 
         setIsEditing(false);
         setNoteToEdit(null);
+        console.log("Note updated successfully!");
       } catch (error) {
         console.error("Error updating the note:", error);
       }
@@ -164,18 +181,14 @@ const Home: React.FC<HomeProps> = ({
 
   // add category
 
-  const [localCategories, setLocalCategories] = useState<
-    { id: number; name: string }[]
-  >([]);
   const [isAddingCategory, setIsAddingCategory] = useState(false);
 
   const handleAddCategory = async (name: string) => {
     try {
-      const newCategory = await addCategory({ name });
+      const newCategory: NewCategory = { name }; // Solo enviamos el campo "name"
+      await addCategory(newCategory);
 
       const updatedCategories = await fetchCategories();
-
-      setLocalCategories(updatedCategories);
       setCategories(updatedCategories);
 
       Swal.fire({
@@ -186,8 +199,8 @@ const Home: React.FC<HomeProps> = ({
       });
 
       setIsAddingCategory(false);
-    } catch (error: any) {
-      if (error.response && error.response.status === 400) {
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error) && error.response?.status === 400) {
         Swal.fire({
           title: "Oops!",
           text: "The category already exists!",

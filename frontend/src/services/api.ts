@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Note, Category, NewNote } from "../App";
+import { Note, Category, NewNote, NewCategory } from "../App";
 
 const API_BASE_URL =
   import.meta.env.VITE_BACKEND_URL ||
@@ -48,7 +48,9 @@ export const fetchCategories = async (): Promise<Category[]> => {
   return response.data;
 };
 
-export const addCategory = async (newCategory: Category): Promise<Category> => {
+export const addCategory = async (
+  newCategory: NewCategory
+): Promise<Category> => {
   const response = await axiosInstance.post("/categories", newCategory);
   return response.data;
 };
