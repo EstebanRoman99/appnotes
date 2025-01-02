@@ -8,7 +8,7 @@ import * as yup from "yup";
 import { addCategory, fetchCategories, deleteCategory } from "../services/api";
 import { fetchNotes } from "../services/api";
 import Swal from "sweetalert2";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 
 interface HomeProps {
   notes: Note[];
@@ -107,14 +107,15 @@ const Home: React.FC<HomeProps> = ({
     handleSubmit: editHandleSubmit,
     reset: editReset,
     formState: { errors: editErrors },
-  } = useForm<Note>({
+  } = useForm<AddNoteFormData>({
     resolver: yupResolver(noteSchema),
-    defaultValues: noteToEdit || {
-      id: 0,
-      title: "",
-      description: "",
-      categories: [],
-      archived: false,
+    defaultValues: {
+      title: noteToEdit?.title || "",
+      description: noteToEdit?.description || "",
+      categories:
+        noteToEdit?.categories.map((cat) =>
+          typeof cat === "string" ? cat : cat.id.toString()
+        ) || [], // Convertir objetos a cadenas
     },
   });
 
@@ -127,21 +128,18 @@ const Home: React.FC<HomeProps> = ({
   // Post Edit
   const onEditSubmit = async (data: AddNoteFormData) => {
     if (noteToEdit) {
+      const formattedCategories = (data.categories || []).map((categoryId) => ({
+        id: parseInt(categoryId, 10), // Convertir de string a número
+        name: "", // Backend no requiere el nombre en este caso
+      }));
+
       const updatedData = {
         ...data,
-        categories: (data.categories || []).map((category) => {
-          if (typeof category === "string") {
-            // Si es un string, conviértelo en un objeto con `id` y un `name` vacío.
-            return { id: parseInt(category, 10), name: "" };
-          } else if (typeof category === "object" && "id" in category) {
-            // Si ya es un objeto con `id`, devuélvelo tal cual.
-            return category;
-          }
-          throw new Error("Invalid category format");
-        }),
+        categories: formattedCategories, // Categorías formateadas
       };
 
       try {
+        console.log("Datos enviados al backend:", updatedData);
         const updatedNote = await updateNote(noteToEdit.id, updatedData);
 
         setNotes(
