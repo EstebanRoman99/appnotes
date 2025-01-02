@@ -1,7 +1,6 @@
 import axios from "axios";
-import { Note, Category } from "../App"; // Asegúrate de importar tus interfaces correctamente
+import { Note, Category, NewNote } from "../App";
 
-// Define la URL base desde una variable de entorno o valor por defecto
 const API_BASE_URL =
   import.meta.env.VITE_BACKEND_URL ||
   "https://appnotes-backend.onrender.com/api";
@@ -18,7 +17,7 @@ export const fetchNotes = async (): Promise<Note[]> => {
   return response.data;
 };
 
-export const addNote = async (newNote: Note): Promise<Note> => {
+export const addNote = async (newNote: NewNote): Promise<Note> => {
   const response = await axiosInstance.post("/notes", newNote);
   return response.data;
 };

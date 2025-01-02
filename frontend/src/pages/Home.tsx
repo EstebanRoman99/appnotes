@@ -38,13 +38,8 @@ const Home: React.FC<HomeProps> = ({
     description: yup.string().required("Description is required"),
     categories: yup
       .array()
-      .of(
-        yup.object({
-          id: yup.number().required(),
-          name: yup.string().required(),
-        })
-      )
-      .required("Categories are required"),
+      .of(yup.string())
+      .required("Select at least one category"),
   });
 
   // state add notes
@@ -79,13 +74,23 @@ const Home: React.FC<HomeProps> = ({
   }
 
   const onAddSubmit = (data: AddNoteFormData) => {
-    const selectedCategoryIds = data.categories.map((id: string) =>
-      parseInt(id)
-    );
+    try {
+      console.log("Adding note...", data);
 
-    handleAddNote(data.title, data.description, selectedCategoryIds);
-    setIsAdding(false);
-    addReset();
+      const selectedCategoryIds =
+        data.categories?.map((id: string) => parseInt(id, 10)) || [];
+
+      // Llamamos a la función para agregar la nota
+      handleAddNote(data.title, data.description, selectedCategoryIds);
+
+      // Cerrar formulario y resetear
+      setIsAdding(false);
+      addReset();
+
+      console.log("Note added successfully!");
+    } catch (error) {
+      console.error("Error adding note:", error);
+    }
   };
 
   const {
@@ -96,10 +101,10 @@ const Home: React.FC<HomeProps> = ({
   } = useForm<Note>({
     resolver: yupResolver(noteSchema),
     defaultValues: noteToEdit || {
-      id: 0, // Asegúrate de que haya valores por defecto válidos
+      id: 0,
       title: "",
       description: "",
-      categories: [], // Default como un arreglo vacío
+      categories: [],
       archived: false,
     },
   });

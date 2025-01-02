@@ -25,6 +25,13 @@ export interface Category {
   name: string;
 }
 
+export interface NewNote {
+  title: string;
+  description: string;
+  categories: { id: number }[];
+  archived: boolean;
+}
+
 function App() {
   // get api all notes
   useEffect(() => {
@@ -53,16 +60,21 @@ function App() {
     description: string,
     selectedCategoryIds: number[]
   ) => {
-    const newNote = {
+    // Crear el objeto de la nueva nota
+    const newNote: NewNote = {
       title,
       description,
-      categories: selectedCategoryIds.map((id) => id.toString()), // Convertir a string[]
+      categories: selectedCategoryIds.map((id) => ({ id })), // Solo enviamos el id al backend
       archived: false,
     };
 
     try {
-      const createdNote = await addNote(newNote); // La función addNote espera un objeto que coincida con la interfaz Note
+      console.log("Note to be added:", newNote);
 
+      // Llama al método API para enviar la nota al backend
+      const createdNote = await addNote(newNote);
+
+      // Actualiza el estado con la nueva nota
       setActiveNotes((prevNotes) => [...prevNotes, createdNote]);
 
       Swal.fire({
