@@ -11,7 +11,7 @@ const Login = () => {
       const { token } = await login(username, password);
       localStorage.setItem("token", token);
       window.location.href = "/";
-    } catch (error) {
+    } catch {
       Swal.fire({
         title: "Error",
         text: "Invalid username or password",

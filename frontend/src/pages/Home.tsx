@@ -39,18 +39,9 @@ const Home: React.FC<HomeProps> = ({
     description: yup.string().required("Description is required"),
     categories: yup
       .array()
-      .of(
-        yup.lazy((value) =>
-          typeof value === "string"
-            ? yup.string()
-            : yup.object({
-                id: yup.number().required("Category ID is required"),
-              })
-        )
-      )
+      .of(yup.string().required()) // Permitir solo cadenas
       .required("Select at least one category"),
   });
-
   // state add notes
   const [isAdding, setIsAdding] = useState(false);
 
@@ -115,13 +106,23 @@ const Home: React.FC<HomeProps> = ({
       categories:
         noteToEdit?.categories.map((cat) =>
           typeof cat === "string" ? cat : cat.id.toString()
-        ) || [], // Convertir objetos a cadenas
+        ) || [],
     },
   });
 
   const handleEdit = (note: Note) => {
     setNoteToEdit(note);
-    editReset({ ...note, categories: note.categories || [] });
+
+    // Transformar categorías a cadenas (IDs como strings)
+    const formattedCategories = note.categories.map((category) =>
+      category.id.toString()
+    );
+
+    editReset({
+      ...note,
+      categories: formattedCategories, // Pasar las categorías como string[]
+    });
+
     setIsEditing(true);
   };
 
@@ -130,7 +131,7 @@ const Home: React.FC<HomeProps> = ({
     if (noteToEdit) {
       const formattedCategories = (data.categories || []).map((categoryId) => ({
         id: parseInt(categoryId, 10), // Convertir de string a número
-        name: "", // Backend no requiere el nombre en este caso
+        name: "",
       }));
 
       const updatedData = {
@@ -139,7 +140,6 @@ const Home: React.FC<HomeProps> = ({
       };
 
       try {
-        console.log("Datos enviados al backend:", updatedData);
         const updatedNote = await updateNote(noteToEdit.id, updatedData);
 
         setNotes(
@@ -148,9 +148,26 @@ const Home: React.FC<HomeProps> = ({
 
         setIsEditing(false);
         setNoteToEdit(null);
+
+        // SweetAlert2: Mostrar mensaje de éxito
+        Swal.fire({
+          title: "Success!",
+          text: "The note was updated successfully.",
+          icon: "success",
+          confirmButtonColor: "#4CAF50",
+        });
+
         console.log("Note updated successfully!");
       } catch (error) {
         console.error("Error updating the note:", error);
+
+        // SweetAlert2: Mostrar mensaje de error
+        Swal.fire({
+          title: "Error!",
+          text: "There was an error updating the note. Please try again.",
+          icon: "error",
+          confirmButtonColor: "#F44336",
+        });
       }
     }
   };
@@ -266,6 +283,8 @@ const Home: React.FC<HomeProps> = ({
             onChange={(e) => setFilterCategory(e.target.value)}
             className="border p-2 rounded"
           >
+            {/* Opción para ver todas las notas */}
+            <option value="">All Categories</option>
             {categories.map((category) => (
               <option key={category.id} value={category.name}>
                 {category.name}
@@ -273,6 +292,7 @@ const Home: React.FC<HomeProps> = ({
             ))}
           </select>
         </div>
+
         <button
           onClick={() => setIsAdding(true)}
           className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
