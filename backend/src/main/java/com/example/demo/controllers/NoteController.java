@@ -8,7 +8,6 @@ import com.example.demo.repositories.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
-import java.util.HashSet;
 import org.springframework.http.MediaType;
 
 import java.util.List;
@@ -19,6 +18,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/notes")
+
 public class NoteController {
 
     @Autowired
