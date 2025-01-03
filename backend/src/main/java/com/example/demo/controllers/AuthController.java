@@ -9,6 +9,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/auth")
+@CrossOrigin(origins = {"http://localhost:5173", "https://appnotes-5hgt.vercel.app"}) //
 public class AuthController {
 
     private final String USERNAME = "user";
