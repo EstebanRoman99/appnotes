@@ -16,11 +16,11 @@ public class CorsConfig {
                 registry.addMapping("/**") 
                         .allowedOrigins(
                             "http://localhost:5173", // Desarrollo local
-                            "https://appnotes-backend.onrender.com/api" // Producción en Vercel
+                            "https://appnotes-5hgt.vercel.app" // Frontend en Vercel
                         )
-                        .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS") // Incluye OPTIONS para CORS preflight
+                        .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS") // Incluye OPTIONS
                         .allowedHeaders("*")
-                        .allowCredentials(true); // Opcional, solo si usas cookies o autenticación basada en sesiones
+                        .allowCredentials(true); // Solo si usas cookies o autenticación basada en sesiones
             }
         };
     }
