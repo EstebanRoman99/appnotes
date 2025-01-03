@@ -15,13 +15,15 @@ public class CorsConfig {
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**") 
                         .allowedOrigins(
-                            "http://localhost:5173", // Desarrollo local
-                            "https://appnotes-5hgt.vercel.app" // Frontend en Vercel
+                            "http://localhost:5173", 
+                            "https://appnotes-5hgt.vercel.app" 
                         )
-                        .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS") // Incluye OPTIONS
-                        .allowedHeaders("*")
-                        .allowCredentials(true); // Solo si usas cookies o autenticación basada en sesiones
+                        .allowedMethods("*") 
+                        .allowedHeaders("*") 
+                        .allowCredentials(true); 
             }
         };
     }
 }
+
+
