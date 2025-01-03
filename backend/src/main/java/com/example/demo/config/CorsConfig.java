@@ -13,14 +13,11 @@ public class CorsConfig {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**") 
-                        .allowedOrigins(
-                            "http://localhost:5173", 
-                            "https://appnotes-5hgt.vercel.app" 
-                        )
-                        .allowedMethods("*") 
-                        .allowedHeaders("*") 
-                        .allowCredentials(true); 
+                registry.addMapping("/**")
+                        .allowedOrigins("*") // Permitir todos los orígenes temporalmente
+                        .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS") // Permitir todos los métodos
+                        .allowedHeaders("*") // Permitir todos los encabezados
+                        .allowCredentials(false); // Asegúrate de no usar credenciales por ahora
             }
         };
     }
