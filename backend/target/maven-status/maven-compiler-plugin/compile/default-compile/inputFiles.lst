@@ -1,6 +1,5 @@
 /Users/seiradanny/Documents/git/notesapp/backend/src/main/java/com/example/demo/DemoApplication.java
-/Users/seiradanny/Documents/git/notesapp/backend/src/main/java/com/example/demo/config/CorsConfig.java
-/Users/seiradanny/Documents/git/notesapp/backend/src/main/java/com/example/demo/config/SecurityConfig.java
+/Users/seiradanny/Documents/git/notesapp/backend/src/main/java/com/example/demo/config/CorsGlobalConfig.java
 /Users/seiradanny/Documents/git/notesapp/backend/src/main/java/com/example/demo/controllers/AuthController.java
 /Users/seiradanny/Documents/git/notesapp/backend/src/main/java/com/example/demo/controllers/CategoryController.java
 /Users/seiradanny/Documents/git/notesapp/backend/src/main/java/com/example/demo/controllers/NoteController.java
