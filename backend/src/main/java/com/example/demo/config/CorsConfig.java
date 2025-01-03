@@ -14,9 +14,13 @@ public class CorsConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**") 
-                        .allowedOrigins("http://localhost:5173") 
-                        .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE")
-                        .allowedHeaders("*");
+                        .allowedOrigins(
+                            "http://localhost:5173", // Desarrollo local
+                            "https://appnotes-backend.onrender.com/api" // Producción en Vercel
+                        )
+                        .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS") // Incluye OPTIONS para CORS preflight
+                        .allowedHeaders("*")
+                        .allowCredentials(true); // Opcional, solo si usas cookies o autenticación basada en sesiones
             }
         };
     }
