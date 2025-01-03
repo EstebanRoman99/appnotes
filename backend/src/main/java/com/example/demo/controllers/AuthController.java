@@ -9,6 +9,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/auth")
+@CrossOrigin(origins = {"http://localhost:5173", "https://appnotes-backend.onrender.com/api"}) 
 public class AuthController {
 
     private final String USERNAME = "user";
