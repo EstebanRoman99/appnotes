@@ -1,14 +1,21 @@
+# Etapa 1: Construir el .jar con Maven
+FROM maven:3.9.4-eclipse-temurin-17 as builder
 
+WORKDIR /app
+COPY pom.xml .
+# Copiamos solo el pom primero para cachear dependencias
+RUN mvn dependency:go-offline
+
+COPY src ./src
+RUN mvn clean package -DskipTests
+
+# Etapa 2: Copiar .jar compilado en una imagen más ligera
 FROM openjdk:17-jdk-slim
-
 
 WORKDIR /app
 
-
-COPY target/*.jar app.jar
-
+# Copiamos el .jar de la etapa anterior
+COPY --from=builder /app/target/*.jar app.jar
 
 EXPOSE 8080
-
-
 ENTRYPOINT ["java", "-jar", "app.jar"]
