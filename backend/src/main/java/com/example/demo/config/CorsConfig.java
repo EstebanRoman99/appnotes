@@ -14,13 +14,14 @@ public class CorsConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOrigins("*") // Permitir todos los orígenes temporalmente
-                        .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS") // Permitir todos los métodos
-                        .allowedHeaders("*") // Permitir todos los encabezados
-                        .allowCredentials(false); // Asegúrate de no usar credenciales por ahora
+                        .allowedOrigins(
+                            "http://localhost:5173", // Desarrollo local
+                            "https://appnotes-5hgt.vercel.app" // Dominio en producción
+                        )
+                        .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
+                        .allowedHeaders("*")
+                        .allowCredentials(true); // Si usas cookies o autenticación
             }
         };
     }
 }
-
-
