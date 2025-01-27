@@ -68,8 +68,8 @@ The application allows users to manage notes with the following features:
 1. **Clone the Repository**
 
    ```bash
-   git clone https://github.com/ensolvers-github-challenges/RomanHernandez-72a462.git
-   cd RomanHernandez-72a462
+   git clone https:https://github.com/EstebanRoman99/appnotes.git
+   cd appnotes
    ```
 
 2. **Backend Setup**
@@ -163,8 +163,8 @@ The `start.sh` script automates the setup process for the application:
 1. Clone the project repository:
 
    ```bash
-   git clone https://github.com/your-repository-url.git
-   cd RomanHernandez-72a462
+   git clone https://github.com/EstebanRoman99/appnotes.git
+   cd appnotes
    ```
 
 2. Make the script executable:
