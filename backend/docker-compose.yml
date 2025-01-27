@@ -1,18 +1,4 @@
-version: "3.8"
-
 services:
-  postgres:
-    image: postgres:latest
-    container_name: postgres-db
-    environment:
-      POSTGRES_USER: notes_user
-      POSTGRES_PASSWORD: password123
-      POSTGRES_DB: notes_db
-    ports:
-      - "5432:5432"
-    volumes:
-      - pgdata:/var/lib/postgresql/data
-
   backend:
     build:
       context: .
@@ -21,11 +7,8 @@ services:
     ports:
       - "8080:8080"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/notes_db
-      SPRING_DATASOURCE_USERNAME: notes_user
-      SPRING_DATASOURCE_PASSWORD: password123
-    depends_on:
-      - postgres
-
-volumes:
-  pgdata:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db.vxnjsbfmyzsqfuzfmloq.supabase.co:5432/postgres?sslmode=require
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: Kz9L1HIJfqXUZzmF
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_SHOW_SQL: true
