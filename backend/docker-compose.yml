@@ -11,6 +11,6 @@ services:
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://dpg-cubuqa8gph6c739j2qcg-a.oregon-postgres.render.com:5432/notes_db2
       SPRING_DATASOURCE_USERNAME: notes_user
-      SPRING_DATASOURCE_PASSWORD: swIYBanVgjq1sxQubSoaKpVHN79qOdpB
+      SPRING_DATASOURCE_PASSWORD: sasuke123
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
       SPRING_JPA_SHOW_SQL: true
